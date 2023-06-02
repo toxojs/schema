@@ -7,19 +7,21 @@ class FloatType extends ValidateType {
     this.max = options.max;
   }
 
-  validate(value) {
-    const result = super.validate(value);
+  validate(value, fieldName = 'Value') {
+    const result = super.validate(value, fieldName);
     if (result) {
       return result;
     }
-    if (typeof value !== 'number') {
-      return 'Value must be a number';
-    }
-    if (this.min && value < this.min) {
-      return `Value must be at least ${this.min}`;
-    }
-    if (this.max && value > this.max) {
-      return `Value must be at most ${this.max}`;
+    if (value !== undefined && value !== null) {
+      if (typeof value !== 'number' || !Number.isFinite(value)) {
+        return `${fieldName} must be a number`;
+      }
+      if (this.min && value < this.min) {
+        return `${fieldName} must be at least ${this.min}`;
+      }
+      if (this.max && value > this.max) {
+        return `${fieldName} must be at most ${this.max}`;
+      }
     }
     return undefined;
   }

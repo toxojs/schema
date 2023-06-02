@@ -1,13 +1,15 @@
 const { FloatType } = require('./float');
 
 class IntegerType extends FloatType {
-  validate(value) {
-    const result = super.validate(value);
+  validate(value, fieldName = 'Value') {
+    const result = super.validate(value, fieldName);
     if (result) {
       return result;
     }
-    if (!Number.isInteger(value)) {
-      return 'Value must be an integer';
+    if (value !== undefined && value !== null) {
+      if (!Number.isInteger(value)) {
+        return `${fieldName} must be an integer`;
+      }
     }
     return undefined;
   }

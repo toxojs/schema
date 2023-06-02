@@ -1,13 +1,13 @@
 const { ValidateType } = require('./validate-type');
 
 class BooleanType extends ValidateType {
-  validate(value) {
-    const result = super.validate(value);
+  validate(value, fieldName = 'Value') {
+    const result = super.validate(value, fieldName);
     if (result) {
       return result;
     }
-    if (typeof value !== 'boolean') {
-      return 'Value must be a boolean';
+    if (value !== undefined && value !== null && typeof value !== 'boolean') {
+      return `${fieldName} must be a boolean`;
     }
     return undefined;
   }

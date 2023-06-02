@@ -3,23 +3,25 @@ const { ValidateType } = require('./validate-type');
 class StringType extends ValidateType {
   constructor(options = {}) {
     super(options);
-    this.minLength = options.minLength;
-    this.maxLength = options.maxLength;
+    this.min = options.min;
+    this.max = options.max;
   }
 
-  validate(value) {
-    const result = super.validate(value);
+  validate(value, fieldName = 'Value') {
+    const result = super.validate(value, fieldName);
     if (result) {
       return result;
     }
-    if (typeof value !== 'string') {
-      return 'Value must be a string';
-    }
-    if (this.minLength && value.length < this.minLength) {
-      return `Value must be at least ${this.minLength} characters long`;
-    }
-    if (this.maxLength && value.length > this.maxLength) {
-      return `Value must be at most ${this.maxLength} characters long`;
+    if (value !== undefined && value !== null) {
+      if (typeof value !== 'string') {
+        return `${fieldName} must be a string`;
+      }
+      if (this.min && value.length < this.min) {
+        return `${fieldName} must be at least ${this.min} characters long`;
+      }
+      if (this.max && value.length > this.max) {
+        return `${fieldName} must be at most ${this.max} characters long`;
+      }
     }
     return undefined;
   }
